@@ -5,13 +5,17 @@ eens.style.display = "none";
 oneens.style.display = "none";
 geen.style.display = "none";
 terug.style.display = "none";
+partiesButton.style.display = "none";
 
 function startVoting() {
     start.style.display = "none";
+    stemwijzer.style.display = "none";
+    title.style.display = "none";
     eens.style.display = "inline-block";
     oneens.style.display = "inline-block";
     geen.style.display = "inline-block";
     terug.style.display = "inline-block";
+    partiesButton.style.display = "inline-block";
     loadQuestion(vraag);
 }
 
