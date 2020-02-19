@@ -16,10 +16,17 @@ function startVoting() {
     geen.style.display = "inline-block";
     terug.style.display = "inline-block";
     partiesButton.style.display = "inline-block";
+    partiesButton.onclick = function() { showPartiesOpinion() };
     loadQuestion(vraag);
 }
 
 function loadQuestion(question) {
+    collEens.innerText = "";
+    collOneens.innerText = "";
+    collGeen.innerText = "";
+    collEens.innerText = "Eens";
+    collOneens.innerText = "Oneens";
+    collGeen.innerText = "Geen van beide";
     titel.innerText = subjects[question]['title'];
     stelling.innerText = subjects[question]['statement'];
 }
@@ -38,17 +45,36 @@ function back() {
 }
 
 function showPartiesOpinion() {
+    partiesButton.removeAttribute("onclick");
     subjects[vraag]['parties'].forEach(function (value, key) {
-            partyName = document.createElement('H1');
-            partyPosition = document.createElement('p');
-            partyOpinion = document.createElement('p');
-            partyName.innerText = value['name'];
-            partyPosition.innerText = value['position'];
-            partyOpinion.innerText = value['opinion'];
+            addButton = document.createElement('button');
+            addDiv = document.createElement('div');
+            addP = document.createElement('p');
 
-            partiesInfo.appendChild(partyName);
-            partiesInfo.appendChild(partyPosition);
-            partiesInfo.appendChild(partyOpinion);
+            addButton.innerText = value['name'];
+            addP.innerText = value['opinion'];
+
+
+            if ('pro' === value['position']) {
+                collumn = collEens;
+            } else if ('contra' === value['position']) {
+                collumn = collOneens;
+            } else if ('none' === value['position']) {
+                collumn = collGeen;
+            }
+            collumn.appendChild(addButton).setAttribute("class", "accordion");
+            var test = collumn.appendChild(addDiv);
+            test.setAttribute("class", "panel");
+            test.setAttribute("style", "display: none;");
+            addDiv.appendChild(addP);
         }
     );
+}
+
+function countEens() {
+    answers.forEach(eens => console.log(eens));
+}
+
+function loadResults() {
+
 }
