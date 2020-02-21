@@ -16,7 +16,6 @@ function startVoting() {
     eens.style.display = "inline-block";
     oneens.style.display = "inline-block";
     geen.style.display = "inline-block";
-    terug.style.display = "inline-block";
     slaover.style.display = "inline-block";
     partiesButton.style.display = "inline-block";
     loadQuestion(vraag);
@@ -27,6 +26,12 @@ function loadQuestion(question) {
     collEens.innerText = "";
     collOneens.innerText = "";
     collGeen.innerText = "";
+    if (vraag >= 1) {
+        terug.style.display = "inline-block";
+    } else if (vraag <= 1) {
+        terug.style.display = "none";
+    }
+    partiesOpinionDiv.setAttribute("style", "display: none;");
     titel.innerText = count + '. ' + subjects[question]['title'];
     stelling.innerText = subjects[question]['statement'];
 }
@@ -44,11 +49,8 @@ function back() {
         vraag--;
         count--;
         loadQuestion(vraag);
+        loadPartiesOpinions();
     }
-}
-
-function countEens() {
-    answers.forEach(eens => console.log(eens));
 }
 
 function toggle() {
