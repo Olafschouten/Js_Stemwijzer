@@ -2,12 +2,15 @@ var vraag = 0;
 var answers = {};
 var count = 1;
 
+const partiesSize = 5;
+
 eens.style.display = "none";
 oneens.style.display = "none";
 geen.style.display = "none";
 terug.style.display = "none";
 slaover.style.display = "none";
 partiesButton.style.display = "none";
+partiesButton1.style.display = "none";
 
 function startVoting() {
     start.style.display = "none";
@@ -18,8 +21,10 @@ function startVoting() {
     geen.style.display = "inline-block";
     slaover.style.display = "inline-block";
     partiesButton.style.display = "inline-block";
+    partiesButton1.style.display = "inline-block";
     loadQuestion(vraag);
     loadPartiesOpinions();
+    loadParties();
 }
 
 function loadQuestion(question) {
@@ -54,11 +59,20 @@ function back() {
 }
 
 function toggle() {
-    var x = document.getElementById("partiesOpinionDiv");
-    if (x.style.display === "none") {
-        x.style.display = "block";
+    if (partiesOpinionDiv.style.display === "none") {
+        partiesOpinionDiv.style.display = "block";
+        showParties.style.display = "none";
     } else {
-        x.style.display = "none";
+        partiesOpinionDiv.style.display = "none";
+    }
+}
+
+function toggleParties() {
+    if (showParties.style.display === "none") {
+        showParties.style.display = "block";
+        partiesOpinionDiv.style.display = "none";
+    } else {
+        showParties.style.display = "none";
     }
 }
 
@@ -90,3 +104,56 @@ function loadPartiesOpinions() {
         }
     );
 }
+
+function loadParties() {
+    addDiv = document.createElement('div');
+    addDiv.setAttribute("id", "showParties");
+
+    var i = 0;
+    parties.forEach(function () {
+            if (parties[i]['size'] >= partiesSize) {
+                partyName = document.createElement('h5');
+                partyLong = document.createElement('p');
+
+                partyName.innerText = parties[i]['name'];
+
+                if (parties[i]['long']) {
+                    partyLong.innerText = parties[i]['long'];
+                }
+
+                container.appendChild(addDiv);
+                addDiv.appendChild(partyName);
+                addDiv.appendChild(partyLong);
+                i++;
+            }
+        }
+    );
+
+    showParties.style.display = "none";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
