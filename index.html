@@ -26,17 +26,23 @@
         </div>
     </div>
 
-    <button id="partiesButton" onclick="toggle()" class="btn btn-dark m-3">Wat vinden de partijen?</button>
-    <button id="partiesButton1" onclick="toggleParties()" class="btn btn-dark m-3">Wat vinden de pro partijen?</button>
+    <button id="partiesButton" onclick="toggleAllParties('opinion')" class="btn btn-dark m-3">Wat vinden de partijen?</button>
+    <button id="bigPartiesButton" onclick="toggleAllParties('big')" class="btn btn-dark m-3">Zie de grote partijen.</button>
+    <button id="secularPartiesButton" onclick="toggleAllParties('secular')" class="btn btn-dark m-3">Zie de seculiere partijen.</button>
 
     <div id="partiesInfo"></div>
 
-    <div id="partiesOpinionDiv" class="row" style="display: none;">
+    <div id="opinionParties" class="row" style="display: none;">
         <div id="collEens" class="col-md-3" style="display: inline-block;"></div>
         <div id="collOneens" class="col-md-3" style="display: inline-block;"></div>
         <div id="collGeen" class="col-md-3" style="display: inline-block;"></div>
     </div>
 
+    <div id="bigParties" style="display: none;">
+    </div>
+
+    <div id="secularParties" style="display: none;">
+    </div>
 </div>
 
 <script src="data.js"></script>

@@ -10,7 +10,8 @@ geen.style.display = "none";
 terug.style.display = "none";
 slaover.style.display = "none";
 partiesButton.style.display = "none";
-partiesButton1.style.display = "none";
+bigPartiesButton.style.display = "none";
+secularPartiesButton.style.display = "none";
 
 function startVoting() {
     start.style.display = "none";
@@ -21,10 +22,13 @@ function startVoting() {
     geen.style.display = "inline-block";
     slaover.style.display = "inline-block";
     partiesButton.style.display = "inline-block";
-    partiesButton1.style.display = "inline-block";
+    bigPartiesButton.style.display = "inline-block";
+    secularPartiesButton.style.display = "inline-block";
     loadQuestion(vraag);
     loadPartiesOpinions();
-    loadParties();
+    loadBigParties();
+    loadSecularParties();
+    toggleAllParties('all');
 }
 
 function loadQuestion(question) {
@@ -36,7 +40,8 @@ function loadQuestion(question) {
     } else if (vraag <= 1) {
         terug.style.display = "none";
     }
-    partiesOpinionDiv.setAttribute("style", "display: none;");
+    opinionParties.style.display = "none";
+    bigParties.style.display = "none";
     titel.innerText = count + '. ' + subjects[question]['title'];
     stelling.innerText = subjects[question]['statement'];
 }
@@ -58,21 +63,23 @@ function back() {
     }
 }
 
-function toggle() {
-    if (partiesOpinionDiv.style.display === "none") {
-        partiesOpinionDiv.style.display = "block";
-        showParties.style.display = "none";
-    } else {
-        partiesOpinionDiv.style.display = "none";
-    }
-}
-
-function toggleParties() {
-    if (showParties.style.display === "none") {
-        showParties.style.display = "block";
-        partiesOpinionDiv.style.display = "none";
-    } else {
-        showParties.style.display = "none";
+function toggleAllParties(button) {
+    if (button === 'opinion') {
+        opinionParties.style.display = "block";
+        bigParties.style.display = "none";
+        secularParties.style.display = "none";
+    } else if (button === 'big') {
+        opinionParties.style.display = "none";
+        bigParties.style.display = "block";
+        secularParties.style.display = "none";
+    } else if (button === 'secular') {
+        opinionParties.style.display = "none";
+        bigParties.style.display = "none";
+        secularParties.style.display = "block";
+    } else if (button === 'all') {
+        opinionParties.style.display = "none";
+        bigParties.style.display = "none";
+        secularParties.style.display = "none";
     }
 }
 
@@ -105,10 +112,7 @@ function loadPartiesOpinions() {
     );
 }
 
-function loadParties() {
-    addDiv = document.createElement('div');
-    addDiv.setAttribute("id", "showParties");
-
+function loadBigParties() {
     var i = 0;
     parties.forEach(function () {
             if (parties[i]['size'] >= partiesSize) {
@@ -121,39 +125,33 @@ function loadParties() {
                     partyLong.innerText = parties[i]['long'];
                 }
 
-                container.appendChild(addDiv);
-                addDiv.appendChild(partyName);
-                addDiv.appendChild(partyLong);
+                bigParties.appendChild(partyName);
+                bigParties.appendChild(partyLong);
                 i++;
             }
         }
     );
-
-    showParties.style.display = "none";
 }
 
+function loadSecularParties() {
+    var i = 0;
+    parties.forEach(function () {
+            if (parties[i]['secular'] === true) {
+                partyName = document.createElement('h5');
+                partyLong = document.createElement('p');
 
+                partyName.innerText = parties[i]['name'];
 
+                if (parties[i]['long']) {
+                    partyLong.innerText = parties[i]['long'];
+                }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                secularParties.appendChild(partyName);
+                secularParties.appendChild(partyLong);
+                i++;
+            } else {
+                i++;
+            }
+        }
+    );
+}
