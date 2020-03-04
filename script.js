@@ -66,6 +66,7 @@ function vote(voting) {
         partiesButton.style.display = 'none';
         bigPartiesButton.style.display = 'none';
         secularPartiesButton.style.display = 'none';
+        extra.style.display = 'none';
     } else {
         answers[vraag] = voting;
         vraag++;
@@ -74,6 +75,7 @@ function vote(voting) {
         loadPartiesOpinions();
         questionCheck(voting);
     }
+    accordion();
 }
 
 function back() {
