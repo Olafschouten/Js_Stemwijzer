@@ -2,6 +2,8 @@ var vraag = 0;
 var answers = {};
 var count = 1;
 
+var partiesCounter = [];
+
 const partiesSize = 5;
 
 eens.style.display = "none";
@@ -47,11 +49,25 @@ function loadQuestion(question) {
 }
 
 function vote(voting) {
-    answers[vraag] = voting;
-    vraag++;
-    count++;
-    loadQuestion(vraag);
-    loadPartiesOpinions();
+    if (count === 30) {
+        titel.innerText = 'De test is over';
+        stelling.innerText = 'Dit zijn je resultaten';
+        terug.style.display = 'none';
+        eens.style.display = 'none';
+        oneens.style.display = 'none';
+        geen.style.display = 'none';
+        slaover.style.display = 'none';
+        partiesButton.style.display = 'none';
+        bigPartiesButton.style.display = 'none';
+        secularPartiesButton.style.display = 'none';
+    } else {
+        answers[vraag] = voting;
+        vraag++;
+        count++;
+        loadQuestion(vraag);
+        loadPartiesOpinions();
+        questionCheck(voting);
+    }
 }
 
 function back() {
@@ -95,6 +111,9 @@ function loadPartiesOpinions() {
             addButton.innerText = value['name'];
             addP.innerText = value['opinion'];
 
+            if (partiesCounter.length <= 23) {
+                partiesCounter.push(value['name']);
+            }
 
             if ('pro' === value['position']) {
                 collumn = collEens;
@@ -104,9 +123,9 @@ function loadPartiesOpinions() {
                 collumn = collGeen;
             }
             collumn.appendChild(addButton).setAttribute("class", "accordion");
-            var test = collumn.appendChild(addDiv);
-            test.setAttribute("class", "panel");
-            test.setAttribute("style", "display: none;");
+            var divContainer = collumn.appendChild(addDiv);
+            divContainer.setAttribute("class", "panel");
+            divContainer.setAttribute("style", "display: none;");
             addDiv.appendChild(addP);
         }
     );
@@ -151,6 +170,26 @@ function loadSecularParties() {
                 i++;
             } else {
                 i++;
+            }
+        }
+    );
+}
+
+function questionCheck(voting) {
+    subjects[vraag]['parties'].forEach(function (value, key) {
+            if (voting === 'eens') {
+                if (value['position'] === 'pro') {
+                    for (var i = 0; i < partiesCounter.length; i++) {
+                        if (value['name'] === partiesCounter[i]) {
+                            console.log(value['name']);
+
+                            // console.log(partiesCounter[i]);
+
+                            partiesCounter[i].value = '1';
+                            console.log(partiesCounter[i].value);
+                        }
+                    }
+                }
             }
         }
     );
