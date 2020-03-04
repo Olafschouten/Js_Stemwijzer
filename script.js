@@ -2,7 +2,9 @@ var vraag = 0;
 var answers = {};
 var count = 1;
 
+var partiesName = [];
 var partiesCounter = [];
+var extraPoint = 0;
 
 const partiesSize = 5;
 
@@ -14,6 +16,7 @@ slaover.style.display = "none";
 partiesButton.style.display = "none";
 bigPartiesButton.style.display = "none";
 secularPartiesButton.style.display = "none";
+extra.style.display = "none";
 
 function startVoting() {
     start.style.display = "none";
@@ -26,11 +29,13 @@ function startVoting() {
     partiesButton.style.display = "inline-block";
     bigPartiesButton.style.display = "inline-block";
     secularPartiesButton.style.display = "inline-block";
+    extra.style.display = "inline-block";
     loadQuestion(vraag);
     loadPartiesOpinions();
     loadBigParties();
     loadSecularParties();
     toggleAllParties('all');
+    accordion();
 }
 
 function loadQuestion(question) {
@@ -44,6 +49,7 @@ function loadQuestion(question) {
     }
     opinionParties.style.display = "none";
     bigParties.style.display = "none";
+    secularParties.style.display = "none";
     titel.innerText = count + '. ' + subjects[question]['title'];
     stelling.innerText = subjects[question]['statement'];
 }
@@ -111,8 +117,8 @@ function loadPartiesOpinions() {
             addButton.innerText = value['name'];
             addP.innerText = value['opinion'];
 
-            if (partiesCounter.length <= 23) {
-                partiesCounter.push(value['name']);
+            if (partiesName.length <= 23) {
+                partiesName.push(value['name']);
             }
 
             if ('pro' === value['position']) {
@@ -175,18 +181,26 @@ function loadSecularParties() {
     );
 }
 
+function extraWight() {
+    if (extra.innerText === 'Extra gewicht op deze vraag?') {
+        extra.innerText = 'Minder gewicht op deze vraag?';
+        extraPoint = 1;
+    } else {
+        extra.innerText = 'Extra gewicht op deze vraag?';
+        extraPoint = 0;
+    }
+}
+
 function questionCheck(voting) {
     subjects[vraag]['parties'].forEach(function (value, key) {
             if (voting === 'eens') {
                 if (value['position'] === 'pro') {
-                    for (var i = 0; i < partiesCounter.length; i++) {
-                        if (value['name'] === partiesCounter[i]) {
+                    for (var i = 0; i < partiesName.length; i++) {
+                        if (value['name'] === partiesName[i]) {
                             console.log(value['name']);
 
-                            // console.log(partiesCounter[i]);
-
-                            partiesCounter[i].value = '1';
-                            console.log(partiesCounter[i].value);
+                            partiesCounter[i] = 1 + extraPoint;
+                            console.log(partiesCounter[i]);
                         }
                     }
                 }
