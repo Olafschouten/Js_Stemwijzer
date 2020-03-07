@@ -196,6 +196,8 @@ function extraWight() {
     }
 }
 
+var test = [];
+
 function questionCheck(voting) {
     subjects[vraag]['parties'].forEach(function (value, key) {
             if (partiesCount.length <= 22) {
@@ -205,24 +207,43 @@ function questionCheck(voting) {
                 if (value['position'] === 'pro') {
                     for (var i = 0; i < partiesCount.length; i++) {
                         if (value['name'] === partiesCount[i]['name']) {
+
+
+                            test.push({name: value['name'], points: partiesCount[i]['score'] + 1 + extraPoint});
+
                             partiesCount[i]['score'] = partiesCount[i]['score'] + 1 + extraPoint;
-                            // console.log(partiesCount[i]);
                         }
                     }
                 }
             }
-            // if (voting === 'back') {
-            //     if (value['position'] === 'pro') {
-            //         for (var a = 0; a < partiesCount.length; a++) {
-            //             if (value['name'] === partiesCount[a]['name']) {
-            //                 partiesCount[a]['score'] = partiesCount[a]['score'] + -1 + extraPoint;
-            //                 console.log(partiesCount[a]);
-            //             }
-            //         }
-            //     }
-            // }
+            if (voting === 'back') {
+                for (var f = 0; f < partiesCount.length; f++) {
+
+                    console.log(test[f]);
+
+                    if (value['name'] === test[f]['name']) {
+                        // partiesCount[f]['score'] = partiesCount[f]['score'] + -1 + extraPoint;
+                        // console.log(partiesCount[f]);
+                    }
+                }
+            }
         }
     );
+}
+
+function backslash() {
+    subjects[vraag]['parties'].forEach(function (value, key) {
+        if (voting === 'back') {
+            for (var f = 0; f < partiesCount.length; f++) {
+                console.log(value['name']);
+
+                if (value['name'] === test[f]['name']) {
+                    // partiesCount[f]['score'] = partiesCount[f]['score'] + -1 + extraPoint;
+                    // console.log(partiesCount[f]);
+                }
+            }
+        }
+    })
 }
 
 function showScore() {
