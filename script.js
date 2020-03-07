@@ -5,6 +5,7 @@ var count = 1;
 var partiesName = [];
 var partiesCounter = [];
 var extraPoint = 0;
+var partiesCount = [];
 
 const partiesSize = 5;
 
@@ -67,6 +68,7 @@ function vote(voting) {
         bigPartiesButton.style.display = 'none';
         secularPartiesButton.style.display = 'none';
         extra.style.display = 'none';
+        showScore();
     } else {
         answers[vraag] = voting;
         vraag++;
@@ -84,6 +86,7 @@ function back() {
         count--;
         loadQuestion(vraag);
         loadPartiesOpinions();
+        questionCheck('back');
     }
 }
 
@@ -195,18 +198,60 @@ function extraWight() {
 
 function questionCheck(voting) {
     subjects[vraag]['parties'].forEach(function (value, key) {
+            if (partiesCount.length <= 22) {
+                partiesCount.push({name: value['name'], score: 0});
+            }
             if (voting === 'eens') {
                 if (value['position'] === 'pro') {
-                    for (var i = 0; i < partiesName.length; i++) {
-                        if (value['name'] === partiesName[i]) {
-                            console.log(value['name']);
-
-                            partiesCounter[i] = 1 + extraPoint;
-                            console.log(partiesCounter[i]);
+                    for (var i = 0; i < partiesCount.length; i++) {
+                        if (value['name'] === partiesCount[i]['name']) {
+                            partiesCount[i]['score'] = partiesCount[i]['score'] + 1 + extraPoint;
+                            // console.log(partiesCount[i]);
                         }
                     }
                 }
             }
+            // if (voting === 'back') {
+            //     if (value['position'] === 'pro') {
+            //         for (var a = 0; a < partiesCount.length; a++) {
+            //             if (value['name'] === partiesCount[a]['name']) {
+            //                 partiesCount[a]['score'] = partiesCount[a]['score'] + -1 + extraPoint;
+            //                 console.log(partiesCount[a]);
+            //             }
+            //         }
+            //     }
+            // }
         }
     );
+}
+
+function showScore() {
+    var i = 0;
+    partiesCount.forEach(function (key, value) {
+        var som = partiesCount[i]['score'] / 30 * 100;
+
+        partiesCount.sort(function (a, b) {
+            var keyA = new Date(a.score),
+                keyB = new Date(b.score);
+            if (keyA > keyB) return -1;
+            if (keyA < keyB) return 1;
+            return 0;
+        });
+
+        addDiv = document.createElement('div');
+
+        partyName = document.createElement('h5');
+        partyScore = document.createElement('h5');
+
+        partyName.innerText = partiesCount[i]['name'];
+
+        partyScore.innerText = ' - ' + som.toFixed(0) + ' %';
+
+        buttons.appendChild(addDiv);
+        addDiv.setAttribute('class', 'row m-1');
+        addDiv.appendChild(partyName);
+        addDiv.appendChild(partyScore);
+        i++;
+    });
+
 }
