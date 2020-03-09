@@ -3,7 +3,7 @@ var answers = {};
 var count = 1;
 
 var partiesName = [];
-var partiesCounter = [];
+var i = 0;
 var extraPoint = 0;
 var partiesCount = [];
 
@@ -56,7 +56,13 @@ function loadQuestion(question) {
 }
 
 function vote(voting) {
-    if (count === 30) {
+    answers[vraag] = voting;
+    if (count <= 29) {
+        vraag++;
+        count++;
+        loadQuestion(vraag);
+        loadPartiesOpinions();
+    } else {
         titel.innerText = 'De test is over';
         stelling.innerText = 'Dit zijn je resultaten';
         terug.style.display = 'none';
@@ -68,14 +74,8 @@ function vote(voting) {
         bigPartiesButton.style.display = 'none';
         secularPartiesButton.style.display = 'none';
         extra.style.display = 'none';
+        countPoints();
         showScore();
-    } else {
-        answers[vraag] = voting;
-        vraag++;
-        count++;
-        loadQuestion(vraag);
-        loadPartiesOpinions();
-        questionCheck(voting);
     }
     accordion();
 }
@@ -86,7 +86,6 @@ function back() {
         count--;
         loadQuestion(vraag);
         loadPartiesOpinions();
-        questionCheck('back');
     }
 }
 
@@ -123,7 +122,7 @@ function loadPartiesOpinions() {
             addP.innerText = value['opinion'];
 
             if (partiesName.length <= 23) {
-                partiesName.push(value['name']);
+                partiesName.push({name: value['name'], score: 0});
             }
 
             if ('pro' === value['position']) {
@@ -196,77 +195,43 @@ function extraWight() {
     }
 }
 
-var test = [];
-
-function questionCheck(voting) {
-    subjects[vraag]['parties'].forEach(function (value, key) {
-            if (partiesCount.length <= 22) {
-                partiesCount.push({name: value['name'], score: 0});
-            }
-            if (voting === 'eens') {
+function countPoints() {
+    for (var i = 0; i < 30; i++) {
+        if (answers[i] === 'eens') {
+            subjects[i]['parties'].forEach(function (value, key) {
                 if (value['position'] === 'pro') {
-                    for (var i = 0; i < partiesCount.length; i++) {
-                        if (value['name'] === partiesCount[i]['name']) {
-
-
-                            test.push({name: value['name'], points: partiesCount[i]['score'] + 1 + extraPoint});
-
-                            partiesCount[i]['score'] = partiesCount[i]['score'] + 1 + extraPoint;
+                    for (var a = 0; a < partiesName.length; a++) {
+                        if (value['name'] === partiesName[a]['name']) {
+                            partiesName[a]['score'] = partiesName[a]['score'] + 1 + extraPoint;
                         }
                     }
                 }
-            }
-            if (voting === 'back') {
-                for (var f = 0; f < partiesCount.length; f++) {
-
-                    console.log(test[f]);
-
-                    if (value['name'] === test[f]['name']) {
-                        // partiesCount[f]['score'] = partiesCount[f]['score'] + -1 + extraPoint;
-                        // console.log(partiesCount[f]);
-                    }
-                }
-            }
+            });
         }
-    );
-}
-
-function backslash() {
-    subjects[vraag]['parties'].forEach(function (value, key) {
-        if (voting === 'back') {
-            for (var f = 0; f < partiesCount.length; f++) {
-                console.log(value['name']);
-
-                if (value['name'] === test[f]['name']) {
-                    // partiesCount[f]['score'] = partiesCount[f]['score'] + -1 + extraPoint;
-                    // console.log(partiesCount[f]);
-                }
-            }
-        }
-    })
+    }
 }
 
 function showScore() {
     var i = 0;
-    partiesCount.forEach(function (key, value) {
-        var som = partiesCount[i]['score'] / 30 * 100;
-
-        partiesCount.sort(function (a, b) {
-            var keyA = new Date(a.score),
-                keyB = new Date(b.score);
-            if (keyA > keyB) return -1;
-            if (keyA < keyB) return 1;
-            return 0;
-        });
+    partiesName.forEach(function (key, value) {
+        var som = partiesName[i]['score'] / 30 * 100;
 
         addDiv = document.createElement('div');
 
         partyName = document.createElement('h5');
         partyScore = document.createElement('h5');
 
-        partyName.innerText = partiesCount[i]['name'];
+        partyName.innerText = partiesName[i]['name'];
 
         partyScore.innerText = ' - ' + som.toFixed(0) + ' %';
+
+        partiesName.sort(function (a, b) {
+            var keyA = new Date(a.score),
+                keyB = new Date(b.score);
+            if (keyA > keyB) return -1;
+            if (keyA < keyB) return 1;
+            return 0;
+        });
 
         buttons.appendChild(addDiv);
         addDiv.setAttribute('class', 'row m-1');
