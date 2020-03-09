@@ -185,6 +185,7 @@ function loadSecularParties() {
     );
 }
 
+
 function extraWight() {
     if (extra.innerText === 'Extra gewicht op deze vraag?') {
         extra.innerText = 'Minder gewicht op deze vraag?';
