@@ -78,6 +78,7 @@ function vote(voting) {
         showScore();
     }
     accordion();
+
 }
 
 function back() {
@@ -86,6 +87,7 @@ function back() {
         count--;
         loadQuestion(vraag);
         loadPartiesOpinions();
+        pq.innerText = answers[vraag];
     }
 }
 
