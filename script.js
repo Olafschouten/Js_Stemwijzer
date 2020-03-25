@@ -18,6 +18,7 @@ partiesButton.style.display = "none";
 bigPartiesButton.style.display = "none";
 secularPartiesButton.style.display = "none";
 extra.style.display = "none";
+pq.style.display = "none";
 
 function startVoting() {
     start.style.display = "none";
@@ -62,6 +63,7 @@ function vote(voting) {
         count++;
         loadQuestion(vraag);
         loadPartiesOpinions();
+        pq.style.display = "none";
     } else {
         titel.innerText = 'De test is over';
         stelling.innerText = 'Dit zijn je resultaten';
@@ -78,7 +80,6 @@ function vote(voting) {
         showScore();
     }
     accordion();
-
 }
 
 function back() {
@@ -88,6 +89,7 @@ function back() {
         loadQuestion(vraag);
         loadPartiesOpinions();
         pq.innerText = answers[vraag];
+        pq.style.display = 'inline-block'
     }
 }
 
